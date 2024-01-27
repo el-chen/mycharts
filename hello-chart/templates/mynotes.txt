@@ -1,0 +1,55 @@
+ref:  https://www.baeldung.com/ops/kubernetes-helm
+
+ 1) create a helm chart
+ 
+ 2) helm lint ./hello-chart
+
+ 3) render the template locally for quick feedback:
+
+ helm template ./hello-chart
+
+ 4) connect K8s cluster in GKE
+
+gcloud auth login
+gcloud container clusters get-credentials  cluster-3 --zone "us-central1"
+chenel@Elizabeths-MacBook-Pro helm % gcloud container clusters list
+NAME       LOCATION     MASTER_VERSION      MASTER_IP    MACHINE_TYPE  NODE_VERSION        NUM_NODES  STATUS
+cluster-3  us-central1  1.27.7-gke.1121000  34.28.26.95  e2-medium     1.27.7-gke.1121000  3          RUNNING
+
+gcloud container clusters list 
+kubectl get deploy,po,svc
+
+ 5) Install helm
+cd /Users/chenel/appdev/learn/helm/mycharts
+ helm install  hello-chart ./hello-chart
+
+6) Helm list
+ chenel@Elizabeths-MacBook-Pro mycharts % helm list
+NAME         	NAMESPACE	REVISION	UPDATED                             	STATUS  	CHART            	APP VERSION
+hello-chart  	default  	1       	2024-01-27 10:35:50.899627 -0600 CST	deployed	hello-chart-0.1.0	1.16.0     
+liz-nginxdemo	default  	1       	2024-01-27 09:48:53.986633 -0600 CST	deployed	nginxdemo-0.4    	1.3        
+nginxdemo-v1 	default  	1       	2024-01-27 09:50:26.008546 -0600 CST	deployed	nginxdemo-0.1    	1.0        
+
+7) Helm upgrade
+helm upgrade hello-world ./hello-world
+
+8) helm rollback
+helm rollback hello-chart 1
+
+9) Helm Uninstall a release
+helm uninstall hello-chart
+
+10) helm package
+
+we need to package the charts we’ve created to be able to distribute them. 
+This is the command to create a versioned archive file of the chart:
+
+helm package ./hello-chart
+Successfully packaged chart and saved it to: /Users/chenel/appdev/learn/helm/mycharts/hello-chart-0.1.0.tgz
+
+11) Helm repo using github
+cd /Users/chenel/appdev/learn/helm/mycharts
+git init
+
+
+helm repo index hello-chart/ --url https://<username>.github.io/my-repo
