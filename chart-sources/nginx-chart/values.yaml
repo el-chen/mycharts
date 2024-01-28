@@ -1,0 +1,14 @@
+
+nginximage: docker.io/library/nginx:1.25
+
+replicas: 2
+
+ports:
+  containerport: 80
+  serviceport: 80
+
+deploymentlabels:
+  app: nginx
+  env: dev
+
+servicetype: NodePort

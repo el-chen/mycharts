@@ -2,11 +2,11 @@ ref:  https://www.baeldung.com/ops/kubernetes-helm
 
  1) create a helm chart
  
- 2) helm lint ./hello-chart
+ 2) helm lint ./nginx-chart
 
  3) render the template locally for quick feedback:
 
- helm template ./hello-chart
+ helm template ./nginx-chart
 
  4) connect K8s cluster in GKE
 
@@ -47,9 +47,39 @@ This is the command to create a versioned archive file of the chart:
 helm package ./hello-chart
 Successfully packaged chart and saved it to: /Users/chenel/appdev/learn/helm/mycharts/hello-chart-0.1.0.tgz
 
-11) Helm repo using github
+11) Helm repo using github (https://github.com/el-chen/mycharts/tree/master/hello-chart)
 cd /Users/chenel/appdev/learn/helm/mycharts
 git init
+git remote add origin https://github.com/el-chen/mycharts
+git remote -v
+git push --set-upstream origin master
 
+12) Helm Repo 
+We can create a git repository and use that to function as our chart repository. 
 
-helm repo index hello-chart/ --url https://<username>.github.io/my-repo
+create index.html
+helm repo index . --url https://github.com/el-chen/mycharts
+
+This generates the index.yaml file, which we should push to the 
+repository along with the chart archives.
+
+chenel@Elizabeths-MacBook-Pro mycharts % pwd
+/Users/chenel/appdev/learn/helm/mycharts
+
+13) push to github
+/Users/chenel/appdev/learn/helm/mycharts
+ hello-chart-0.1.0.tgz
+    index.yaml
+14) Add repo
+
+helm repo add mycharts  https://github.com/el-chen/mycharts
+
+chenel@Elizabeths-MacBook-Pro mycharts % helm repo add mycharts  https://github.com/el-chen/mycharts
+Error: looks like "https://github.com/el-chen/mycharts" is not a valid chart repository or cannot be reached: failed to fetch https://github.com/el-chen/mycharts/index.yaml : 404 Not Found
+chenel@Elizabeths-MacBook-Pro mycharts % ls -ltr
+total 16
+-rw-r--r--@ 1 chenel  staff  1856 Jan 27 11:10 hello-chart-0.1.0.tgz
+drwxr-xr-x  7 chenel  staff   224 Jan 27 11:22 hello-chart
+-rw-r--r--@ 1 chenel  staff   434 Jan 27 11:25 index.yaml
+
+kubectl describe pod hello-chart-78489df9cb-bz9dc  <== troubleshooting the pod
